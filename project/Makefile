@@ -1,5 +1,5 @@
 SHELL=cmd.exe
-FRONT_END_BINARY=frontApp.exe
+FRONT_END_BINARY=front-end.exe
 BROKER_BINARY=brokerApp
 
 ## up: starts all containers in the background without forcing build
@@ -32,17 +32,17 @@ build_broker:
 build_front:
 	@echo Building front end binary...
 ## chdir ..\front-end && set CGO_ENABLED=0&& set GOOS=windows&& go build -o ${FRONT_END_BINARY} ./cmd/web
-	chdir ..\front-end && npm run  build && npm run serve -- --port 80
+	chdir ..\front-end && npm run  build 
 	@echo Done!
 ## start: starts the front end
 start: build_front
 	@echo Starting front end
-	chdir .\front-end && npm run serve -- --port 80
-##chdir ..\front-end && start /B ${FRONT_END_BINARY} &
+	chdir ..\front-end && start /B ${FRONT_END_BINARY} &
 
 ## stop: stop the front end
 stop:
 	@echo Stopping front end...
-	taskkill /f /im node.exe
+	@taskkill /IM "${FRONT_END_BINARY}" /F
+# taskkill /f /im node.exe
 ## @taskkill /IM "${FRONT_END_BINARY}" /F
 	@echo "Stopped front end!"
